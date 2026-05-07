@@ -76,10 +76,10 @@ async function rescoreMatchesFor(persona) {
   const others = await Persona.find({ _id: { $ne: persona._id } });
   const ops = others.map(async (other) => {
     const [a, b] = String(persona._id) < String(other._id) ? [persona, other] : [other, persona];
-    const { score, traitOverlap, interestSimilarity, goalAlignment } = computeMatch(a, b);
+    const { score, traitOverlap, interestSimilarity, goalAlignment, moodAlignment } = computeMatch(a, b);
     await Match.findOneAndUpdate(
       { personaAId: a._id, personaBId: b._id },
-      { $set: { score, traitOverlap, interestSimilarity, goalAlignment, matchedAt: new Date() } },
+      { $set: { score, traitOverlap, interestSimilarity, goalAlignment, moodAlignment, matchedAt: new Date() } },
       { upsert: true, new: true }
     );
   });

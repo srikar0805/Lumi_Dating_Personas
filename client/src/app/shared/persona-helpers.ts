@@ -26,6 +26,12 @@ export function ownerPossessive(persona: Persona | null | undefined, selfUserId?
   return `${n}'s`;
 }
 
+export function formatGoal(goal: string | undefined | null): string {
+  if (!goal) return '';
+  const spaced = goal.replace(/-/g, ' ');
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+}
+
 export function sharedTokens(a: Persona, b: Persona): string[] {
   const setB = new Set([...(b.traits || []), ...(b.interests || [])].map(x => x.toLowerCase()));
   const shared = [...(a.traits || []), ...(a.interests || [])].filter(x => setB.has(x.toLowerCase()));

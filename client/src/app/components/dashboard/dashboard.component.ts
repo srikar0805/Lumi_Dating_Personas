@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { map, Observable, forkJoin, finalize } from 'rxjs';
 import { PersonaService } from '../../services/persona.service';
 import { MatchService } from '../../services/match.service';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../shared/toast.service';
 import { Persona } from '../../models/persona.model';
 import { Match } from '../../models/match.model';
 import { IconComponent } from '../../shared/icon.component';
 import { PersonaOrbComponent } from '../../shared/persona-orb.component';
+import { PersonaCardComponent } from '../persona-card/persona-card.component';
 import { initialOf, hueOf, ownerNameOf, ownerPossessive } from '../../shared/persona-helpers';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, IconComponent, PersonaOrbComponent],
+  imports: [CommonModule, RouterLink, IconComponent, PersonaOrbComponent, PersonaCardComponent],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
@@ -32,6 +34,8 @@ export class DashboardComponent implements OnInit {
 
   showWelcome = localStorage.getItem('ps-welcome-dismissed') !== '1';
   currentUserId = '';
+  refreshing = false;
+  lastRefreshed: Date | null = null;
 
   dismissWelcome(): void {
     this.showWelcome = false;
@@ -59,6 +63,7 @@ export class DashboardComponent implements OnInit {
     private matchService: MatchService,
     private auth: AuthService,
     private router: Router,
+    private toast: ToastService,
   ) {
     this.topMatches$ = this.matchService.matches$.pipe(
       map(list => [...list].sort((a, b) => b.score - a.score).slice(0, 6)),
@@ -70,8 +75,35 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.user$.subscribe(u => { this.currentUserId = u?.id || ''; });
-    this.personaService.load().subscribe();
-    this.matchService.load().subscribe();
+    this.refresh(true);
+  }
+
+  refresh(silent = false): void {
+    if (this.refreshing) return;
+    this.refreshing = true;
+    forkJoin([
+      this.personaService.load(),
+      this.matchService.load(),
+    ]).pipe(finalize(() => { this.refreshing = false; })).subscribe({
+      next: () => {
+        this.lastRefreshed = new Date();
+        if (!silent) this.toast.push('Dashboard refreshed', 'success');
+      },
+      error: () => {
+        if (!silent) this.toast.push('Could not refresh', 'error');
+      },
+    });
+  }
+
+  get refreshedLabel(): string {
+    if (!this.lastRefreshed) return '';
+    const sec = Math.floor((Date.now() - this.lastRefreshed.getTime()) / 1000);
+    if (sec < 5) return 'just now';
+    if (sec < 60) return `${sec}s ago`;
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min}m ago`;
+    const hr = Math.floor(min / 60);
+    return `${hr}h ago`;
   }
 
   personaFrom(m: Match, side: 'a' | 'b'): Persona | null {

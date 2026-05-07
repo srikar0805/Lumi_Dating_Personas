@@ -28,7 +28,7 @@
       <div class="field">
         <label>Goal</label>
         <select formControlName="connectionGoal">
-          <option *ngFor="let g of goals" [value]="g">{{ g }}</option>
+          <option *ngFor="let g of goals" [value]="g">{{ formatGoal(g) }}</option>
         </select>
       </div>
 
@@ -80,7 +80,7 @@
         <app-persona-orb [initial]="draftInitial" [hue]="hue" [size]="80"></app-persona-orb>
         <div>
           <div class="nm">{{ draftName || 'Unnamed self' }}</div>
-          <div class="gl">Mood: {{ draftMood || '—' }} · Goal: {{ draftGoal }}</div>
+          <div class="gl">Mood: {{ draftMood || '—' }} · Goal: {{ formatGoal(draftGoal) }}</div>
         </div>
       </div>
 
@@ -109,7 +109,7 @@
         Compatibility formula
       </div>
       <div class="muted" style="font-size:12.5px; line-height:1.55">
-        Match scores are computed against every other persona in the network using trait Jaccard (40%), interest Jaccard (40%), and goal alignment (20%). Adding overlapping traits and interests will lift scores with like-minded selves.
+        Match scores are computed against every other persona using trait Jaccard (35%), interest Jaccard (35%), goal alignment (15%) and mood alignment (15%). Adding overlapping traits and interests will lift scores with like-minded selves.
       </div>
     </div>
   </div>

@@ -22,27 +22,70 @@
     </div>
   </div>
 
-  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px">
-    <div *ngFor="let p of filtered$ | async" class="persona-card" (click)="openPersona(p._id!)">
-      <div class="ghost-ring"></div>
-      <app-persona-orb [initial]="initialOf(p)" [hue]="hueOf(p)" [size]="64"></app-persona-orb>
-      <h4>{{ p.name }}</h4>
-      <div class="meta">Mood: {{ p.moodTag || '—' }} · Goal: {{ p.connectionGoal }}</div>
-      <div class="traits">
-        <span *ngFor="let t of p.traits" class="chip">{{ t }}</span>
+  <ng-container *ngIf="(total$ | async) === 0; else hasPersonas">
+    <div class="empty-shell">
+      <div class="empty-art">
+        <div class="orb-row">
+          <span class="empty-orb e1">✦</span>
+          <span class="empty-orb e2">◐</span>
+          <span class="empty-orb e3">◌</span>
+        </div>
       </div>
-      <p class="muted" style="font-size:13px; margin:4px 0 14px; line-height:1.5">{{ p.bio }}</p>
-      <div class="score-row">
-        <div class="score-n">v{{ p.currentVersion || 1 }}<small> current</small></div>
-        <div class="actions">
-          <button class="btn btn-sm btn-ghost" (click)="$event.stopPropagation(); openPersona(p._id!)"><app-icon name="edit"></app-icon></button>
-          <button class="btn btn-sm btn-ghost" (click)="$event.stopPropagation(); openDrift(p._id!)"><app-icon name="clock"></app-icon></button>
-          <button class="btn btn-sm btn-ghost" (click)="delete(p._id!, $event)"><app-icon name="trash"></app-icon></button>
+      <h2>You haven't built a self yet</h2>
+      <p>
+        On Lumi you don't have one profile — you have selves. A career self for collaborators,
+        a weekend self for travel buddies, a creative self for makers. Start with one and add
+        more as you go.
+      </p>
+      <div class="empty-cta">
+        <button class="btn btn-primary" routerLink="/personas/new">
+          <app-icon name="plus"></app-icon> Create your first self
+        </button>
+        <button class="btn btn-ghost" routerLink="/about">
+          <app-icon name="spark"></app-icon> Why selves?
+        </button>
+      </div>
+      <div class="empty-tips">
+        <div class="tip">
+          <div class="tip-num">1</div>
+          <div>
+            <b>Pick a vibe.</b> Starting traits + interests are seeded around the vibe — you can edit anything later.
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-num">2</div>
+          <div>
+            <b>Choose a connection goal.</b> Romantic, collaborator, friend, mentor — different goals match against different people.
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-num">3</div>
+          <div>
+            <b>You can have up to 5 selves.</b> Each one is matched independently against everyone else's selves.
+          </div>
         </div>
       </div>
     </div>
-    <div *ngIf="(filtered$ | async)?.length === 0" class="card" style="grid-column:1/-1; text-align:center; padding:40px">
-      <div class="muted">No personas match that filter.</div>
+  </ng-container>
+
+  <ng-template #hasPersonas>
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px">
+      <app-persona-card
+        *ngFor="let p of filtered$ | async"
+        [persona]="p"
+        [footerLabel]="'v' + (p.currentVersion || 1)"
+        footerSub="current"
+        (open)="openPersona($event)"
+        (edit)="openPersona($event)"
+        (drift)="openDrift($event)"
+        (remove)="deleteId($event)">
+      </app-persona-card>
+      <div *ngIf="(filtered$ | async)?.length === 0" class="card" style="grid-column:1/-1; text-align:center; padding:40px">
+        <div class="muted">No personas match that filter.</div>
+        <button type="button" class="btn btn-ghost btn-sm" style="margin-top:10px" (click)="query=''; moodFilter='All'">
+          Clear filters
+        </button>
+      </div>
     </div>
-  </div>
+  </ng-template>
 </div>

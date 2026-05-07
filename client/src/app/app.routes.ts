@@ -45,6 +45,16 @@ export const routes: Routes = [
     loadComponent: () => import('./components/match-dashboard/match-dashboard.component').then(m => m.MatchDashboardComponent),
   },
   {
+    path: 'connect',
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/connect/connect.component').then(m => m.ConnectComponent),
+  },
+  {
+    path: 'profile',
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent),
+  },
+  {
     path: 'graph',
     canActivate: [authGuard],
     loadComponent: () => import('./components/graph/graph.component').then(m => m.GraphComponent),

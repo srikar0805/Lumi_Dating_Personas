@@ -22,7 +22,7 @@
           <div class="sc">{{ m.score }}%</div>
         </div>
         <div class="sub">
-          trait {{ m.traitOverlap }} · interest {{ m.interestSimilarity }} · goal {{ m.goalAlignment }}
+          trait {{ m.traitOverlap }} · interest {{ m.interestSimilarity }} · goal {{ m.goalAlignment }} · mood {{ m.moodAlignment }}
         </div>
       </div>
       <div *ngIf="(sorted$ | async)?.length === 0" class="card" style="text-align:center; padding:24px">
@@ -76,9 +76,10 @@
         <div class="match-block">
           <h5>Score breakdown</h5>
           <p>
-            Trait overlap: <b>{{ selected.traitOverlap }}</b><br/>
-            Interest similarity: <b>{{ selected.interestSimilarity }}</b><br/>
-            Goal alignment: <b>{{ selected.goalAlignment }}</b>
+            Trait overlap (35%): <b>{{ selected.traitOverlap }}</b><br/>
+            Interest similarity (35%): <b>{{ selected.interestSimilarity }}</b><br/>
+            Goal alignment (15%): <b>{{ selected.goalAlignment }}</b><br/>
+            Mood alignment (15%): <b>{{ selected.moodAlignment }}</b>
           </p>
         </div>
         <div class="match-block">

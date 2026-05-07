@@ -41,7 +41,7 @@ export class LoginComponent {
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        this.error = err?.error?.error || 'Login failed';
+        this.error = AuthService.explainError(err, 'Login failed');
         this.loading = false;
       },
     });

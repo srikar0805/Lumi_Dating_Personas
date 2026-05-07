@@ -26,8 +26,16 @@
       whose selves match yours.
     </p>
     <div class="hero-actions">
+      <button class="btn btn-ghost" type="button" [disabled]="refreshing" (click)="refresh()" [title]="lastRefreshed ? 'Updated ' + refreshedLabel : 'Refresh stats'">
+        <app-icon name="refresh" [class.spinning]="refreshing"></app-icon>
+        <span *ngIf="!refreshing">Refresh</span>
+        <span *ngIf="refreshing">Refreshing…</span>
+      </button>
       <button class="btn btn-ghost" routerLink="/drift"><app-icon name="clock"></app-icon> See history</button>
       <button class="btn btn-primary" (click)="newPersona()"><app-icon name="plus"></app-icon> New self</button>
+    </div>
+    <div *ngIf="lastRefreshed" style="position: absolute; top: 8px; right: 28px; font-size: 10.5px; color: var(--text-faint); letter-spacing: 0.05em; text-transform: uppercase">
+      Updated {{ refreshedLabel }}
     </div>
   </div>
 
@@ -59,23 +67,18 @@
         <button class="btn btn-ghost btn-sm" routerLink="/personas">View all <app-icon name="arrR"></app-icon></button>
       </div>
       <div class="persona-grid">
-        <div *ngFor="let p of personas$ | async" class="persona-card" (click)="openPersona(p._id!)">
-          <div class="ghost-ring"></div>
-          <app-persona-orb [initial]="initialOf(p)" [hue]="hueOf(p)" [size]="54"></app-persona-orb>
-          <h4>{{ p.name }}</h4>
-          <div class="meta">Mood: {{ p.moodTag || '—' }} · Goal: {{ p.connectionGoal }}</div>
-          <div class="traits">
-            <span *ngFor="let t of traitsOf(p)" class="chip">{{ t }}</span>
-            <span *ngIf="extraTraits(p) > 0" class="chip">+{{ extraTraits(p) }}</span>
-          </div>
-          <div class="score-row">
-            <div class="score-n">{{ personaBest(p, (allMatches$ | async)) }}<small>% best match</small></div>
-            <div class="actions">
-              <button class="btn btn-sm btn-ghost" (click)="$event.stopPropagation(); openPersona(p._id!)"><app-icon name="edit"></app-icon></button>
-              <button class="btn btn-sm btn-primary" (click)="$event.stopPropagation(); openMatches()">See matches</button>
-            </div>
-          </div>
-        </div>
+        <app-persona-card
+          *ngFor="let p of personas$ | async"
+          [persona]="p"
+          [orbSize]="54"
+          [maxTraits]="4"
+          [footerLabel]="personaBest(p, (allMatches$ | async)).toString()"
+          footerSub="% best match"
+          [showDrift]="false"
+          [showDelete]="false"
+          (open)="openPersona($event)"
+          (edit)="openPersona($event)">
+        </app-persona-card>
         <div *ngIf="(personas$ | async)?.length === 0" class="card" style="grid-column:1/-1; text-align:center; padding:40px">
           <div class="muted">No personas yet.</div>
           <button class="btn btn-primary" style="margin-top:12px" (click)="newPersona()">

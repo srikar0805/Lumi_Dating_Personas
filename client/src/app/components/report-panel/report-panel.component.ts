@@ -31,7 +31,7 @@ import { ToastService } from '../../shared/toast.service';
         <b>{{ match.score }}%</b>
         <div>
           <div style="font-weight:600; font-size:14px">{{ match.score >= 80 ? 'Strong fit' : match.score >= 60 ? 'Moderate fit' : 'Weak signal' }}</div>
-          <span>Trait {{ match.traitOverlap }} · Interest {{ match.interestSimilarity }} · Goal {{ match.goalAlignment }}</span>
+          <span>Trait {{ match.traitOverlap }} · Interest {{ match.interestSimilarity }} · Goal {{ match.goalAlignment }} · Mood {{ match.moodAlignment }}</span>
         </div>
       </div>
 

@@ -8,6 +8,7 @@ export interface Match {
   traitOverlap: number;
   interestSimilarity: number;
   goalAlignment: number;
+  moodAlignment: number;
   aiReport: string;
   matchedAt: string;
 }

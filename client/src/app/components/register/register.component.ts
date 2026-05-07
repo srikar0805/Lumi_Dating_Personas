@@ -37,6 +37,8 @@ export class RegisterComponent {
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    city: [''],
+    state: [''],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirm: ['', Validators.required],
     vibe: ['wanderer'],
@@ -62,15 +64,15 @@ export class RegisterComponent {
     if (this.form.invalid) return;
     this.loading = true;
     this.error = '';
-    const { name, email, password } = this.form.getRawValue();
-    this.auth.register(name, email, password).subscribe({
+    const { name, email, password, city, state } = this.form.getRawValue();
+    this.auth.register(name, email, password, city, state).subscribe({
       next: () => {
         this.loading = false;
         this.toast.push('Account created — welcome!', 'success');
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        this.error = err?.error?.error || 'Registration failed';
+        this.error = AuthService.explainError(err, 'Registration failed');
         this.loading = false;
       },
     });

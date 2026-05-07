@@ -7,6 +7,7 @@ const matchSchema = new mongoose.Schema({
   traitOverlap: { type: Number, default: 0 },
   interestSimilarity: { type: Number, default: 0 },
   goalAlignment: { type: Number, default: 0 },
+  moodAlignment: { type: Number, default: 0 },
   aiReport: { type: String, default: '' },
   matchedAt: { type: Date, default: Date.now },
 });

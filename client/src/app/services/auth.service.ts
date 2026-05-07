@@ -14,8 +14,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  register(name: string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, { name, email, password })
+  register(name: string, email: string, password: string, city: string = '', state: string = ''): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, { name, email, password, city, state })
       .pipe(tap(res => this.persist(res)));
   }
 
@@ -28,6 +28,21 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this.userSubject.next(null);
+  }
+
+  fetchMe(): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/auth/me`)
+      .pipe(tap(u => this.persistUser(u)));
+  }
+
+  updateProfile(patch: { name?: string; city?: string; state?: string; password?: string }): Observable<User> {
+    return this.http.put<User>(`${environment.apiUrl}/auth/me`, patch)
+      .pipe(tap(u => this.persistUser(u)));
+  }
+
+  private persistUser(u: User): void {
+    localStorage.setItem(USER_KEY, JSON.stringify(u));
+    this.userSubject.next(u);
   }
 
   get token(): string | null {
@@ -53,5 +68,17 @@ export class AuthService {
   private readUser(): User | null {
     const raw = localStorage.getItem(USER_KEY);
     return raw ? JSON.parse(raw) : null;
+  }
+
+  static explainError(err: any, fallback: string): string {
+    if (!err) return fallback;
+    if (err.status === 0) {
+      return "Can't reach the server — is the backend running on http://localhost:5001?";
+    }
+    const fromBody = err?.error?.error || err?.error?.message;
+    if (typeof fromBody === 'string' && fromBody.length) return fromBody;
+    if (typeof err.error === 'string' && err.error.length) return err.error;
+    if (err.status && err.statusText) return `${fallback} (${err.status} ${err.statusText})`;
+    return err?.message || fallback;
   }
 }

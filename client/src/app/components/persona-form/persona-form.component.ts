@@ -7,7 +7,7 @@ import { ConnectionGoal, Persona } from '../../models/persona.model';
 import { IconComponent } from '../../shared/icon.component';
 import { PersonaOrbComponent } from '../../shared/persona-orb.component';
 import { ToastService } from '../../shared/toast.service';
-import { initialOf, hueOf } from '../../shared/persona-helpers';
+import { initialOf, hueOf, formatGoal } from '../../shared/persona-helpers';
 
 const GOALS: ConnectionGoal[] = [
   'romantic', 'collaborator', 'friend', 'mentor', 'travel',
@@ -55,6 +55,7 @@ export class PersonaFormComponent implements OnInit {
   hue = 265;
 
   initialOf = initialOf;
+  formatGoal = formatGoal;
 
   form = this.fb.nonNullable.group({
     name: ['', Validators.required],
