@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthResponse, User } from '../models/user.model';
 
@@ -49,14 +49,12 @@ export class AuthService {
     return localStorage.getItem(TOKEN_KEY);
   }
 
-  get isLoggedIn$(): Observable<boolean> {
-    return new Observable(sub => {
-      this.user$.subscribe(u => sub.next(!!u));
-    });
-  }
+  isLoggedIn$: Observable<boolean> = this.user$.pipe(map(u => !!u));
 
   get isLoggedIn(): boolean {
-    return !!this.token;
+    // Both a token in storage AND a user in memory must be present.
+    // Keeps this getter consistent with isLoggedIn$ (which observes the BehaviorSubject).
+    return !!this.token && !!this.userSubject.value;
   }
 
   private persist(res: AuthResponse): void {

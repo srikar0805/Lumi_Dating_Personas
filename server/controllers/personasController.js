@@ -18,8 +18,12 @@ async function rescoreMatchesFor(persona) {
 }
 
 exports.list = async (req, res) => {
-  const personas = await Persona.find({ userId: req.userId }).sort({ createdAt: -1 });
-  res.json(personas);
+  try {
+    const personas = await Persona.find({ userId: req.userId }).sort({ createdAt: -1 });
+    res.json(personas);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.create = async (req, res) => {
@@ -49,7 +53,8 @@ exports.update = async (req, res) => {
     const existing = await Persona.findOne({ _id: req.params.id, userId: req.userId });
     if (!existing) return res.status(404).json({ error: 'Persona not found' });
 
-    const { userId: _skip, currentVersion: _skip2, ...updates } = req.body;
+    // Strip fields the client should not be able to overwrite directly
+    const { userId: _userId, currentVersion: _currentVersion, ...updates } = req.body;
     Object.assign(existing, updates, { currentVersion: existing.currentVersion + 1 });
     await existing.save();
 
@@ -67,17 +72,25 @@ exports.update = async (req, res) => {
 };
 
 exports.remove = async (req, res) => {
-  const existing = await Persona.findOne({ _id: req.params.id, userId: req.userId });
-  if (!existing) return res.status(404).json({ error: 'Persona not found' });
-  await Match.deleteMany({ $or: [{ personaAId: existing._id }, { personaBId: existing._id }] });
-  await PersonaVersion.deleteMany({ personaId: existing._id });
-  await existing.deleteOne();
-  res.json({ ok: true });
+  try {
+    const existing = await Persona.findOne({ _id: req.params.id, userId: req.userId });
+    if (!existing) return res.status(404).json({ error: 'Persona not found' });
+    await Match.deleteMany({ $or: [{ personaAId: existing._id }, { personaBId: existing._id }] });
+    await PersonaVersion.deleteMany({ personaId: existing._id });
+    await existing.deleteOne();
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.history = async (req, res) => {
-  const persona = await Persona.findOne({ _id: req.params.id, userId: req.userId });
-  if (!persona) return res.status(404).json({ error: 'Persona not found' });
-  const versions = await PersonaVersion.find({ personaId: persona._id }).sort({ versionNumber: -1 });
-  res.json(versions);
+  try {
+    const persona = await Persona.findOne({ _id: req.params.id, userId: req.userId });
+    if (!persona) return res.status(404).json({ error: 'Persona not found' });
+    const versions = await PersonaVersion.find({ personaId: persona._id }).sort({ versionNumber: -1 });
+    res.json(versions);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };

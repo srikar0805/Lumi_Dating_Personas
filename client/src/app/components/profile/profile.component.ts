@@ -135,7 +135,7 @@ export class ProfileComponent implements OnInit {
   save(): void {
     if (this.form.invalid) return;
     const raw = this.form.getRawValue();
-    const patch: any = {
+    const patch: { name: string; city: string; state: string; password?: string } = {
       name: raw.name,
       city: raw.city,
       state: (raw.state || '').toUpperCase(),

@@ -15,40 +15,52 @@ function proximityTier(meCity, meState, themCity, themState) {
 }
 
 exports.list = async (req, res) => {
-  const userPersonas = await Persona.find({ userId: req.userId }).select('_id');
-  const ids = userPersonas.map(p => p._id);
-  const matches = await Match
-    .find({ $or: [{ personaAId: { $in: ids } }, { personaBId: { $in: ids } }] })
-    .sort({ score: -1 })
-    .populate([
-      { path: 'personaAId', populate: { path: 'userId', select: 'name' } },
-      { path: 'personaBId', populate: { path: 'userId', select: 'name' } },
-    ]);
-  res.json(matches);
+  try {
+    const userPersonas = await Persona.find({ userId: req.userId }).select('_id');
+    const ids = userPersonas.map(p => p._id);
+    const matches = await Match
+      .find({ $or: [{ personaAId: { $in: ids } }, { personaBId: { $in: ids } }] })
+      .sort({ score: -1 })
+      .populate([
+        { path: 'personaAId', populate: { path: 'userId', select: 'name' } },
+        { path: 'personaBId', populate: { path: 'userId', select: 'name' } },
+      ]);
+    res.json(matches);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.rescoreAll = async (req, res) => {
-  const personas = await Persona.find({});
-  const ops = [];
-  for (let i = 0; i < personas.length; i++) {
-    for (let j = i + 1; j < personas.length; j++) {
-      const a = personas[i], b = personas[j];
-      const { score, traitOverlap, interestSimilarity, goalAlignment, moodAlignment } = computeMatch(a, b);
-      ops.push(Match.findOneAndUpdate(
-        { personaAId: a._id, personaBId: b._id },
-        { $set: { score, traitOverlap, interestSimilarity, goalAlignment, moodAlignment, matchedAt: new Date() } },
-        { upsert: true, new: true }
-      ));
+  try {
+    const personas = await Persona.find({});
+    const ops = [];
+    for (let i = 0; i < personas.length; i++) {
+      for (let j = i + 1; j < personas.length; j++) {
+        const a = personas[i], b = personas[j];
+        const { score, traitOverlap, interestSimilarity, goalAlignment, moodAlignment } = computeMatch(a, b);
+        ops.push(Match.findOneAndUpdate(
+          { personaAId: a._id, personaBId: b._id },
+          { $set: { score, traitOverlap, interestSimilarity, goalAlignment, moodAlignment, matchedAt: new Date() } },
+          { upsert: true, new: true }
+        ));
+      }
     }
+    await Promise.all(ops);
+    res.json({ ok: true, rescored: ops.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  await Promise.all(ops);
-  res.json({ ok: true, rescored: ops.length });
 };
 
 exports.report = async (req, res) => {
-  const match = await Match.findById(req.params.id);
-  if (!match) return res.status(404).json({ error: 'Match not found' });
-  res.json({ report: match.aiReport });
+  try {
+    const match = await Match.findById(req.params.id);
+    if (!match) return res.status(404).json({ error: 'Match not found' });
+    res.json({ report: match.aiReport });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 exports.connectStack = async (req, res) => {

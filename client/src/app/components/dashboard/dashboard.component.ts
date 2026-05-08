@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { map, Observable, forkJoin, finalize } from 'rxjs';
@@ -20,8 +21,10 @@ import { initialOf, hueOf, ownerNameOf, ownerPossessive } from '../../shared/per
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
+  private destroyRef = inject(DestroyRef);
+
   personas$ = this.personaService.personas$;
-  topMatches$: Observable<Match[]>;
+  topMatches$ = this.matchService.topMatches$;
   allMatches$ = this.matchService.matches$;
   user$ = this.auth.user$;
 
@@ -65,16 +68,15 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private toast: ToastService,
   ) {
-    this.topMatches$ = this.matchService.matches$.pipe(
-      map(list => [...list].sort((a, b) => b.score - a.score).slice(0, 6)),
-    );
     this.bestScore$ = this.matchService.matches$.pipe(
       map(list => list.length ? Math.max(...list.map(m => m.score)) : 0),
     );
   }
 
   ngOnInit(): void {
-    this.auth.user$.subscribe(u => { this.currentUserId = u?.id || ''; });
+    this.auth.user$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(u => { this.currentUserId = u?.id || ''; });
     this.refresh(true);
   }
 
