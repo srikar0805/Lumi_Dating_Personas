@@ -4,8 +4,8 @@
   "description": "Express + MongoDB backend for Lumi",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
     "seed": "node seed.js"
   },
   "dependencies": {
