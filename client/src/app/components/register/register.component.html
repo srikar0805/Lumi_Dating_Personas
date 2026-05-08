@@ -66,11 +66,11 @@
         <div *ngIf="step===0" style="margin-top:20px">
           <div class="field">
             <label>Name</label>
-            <input formControlName="name" placeholder="Your name"/>
+            <input formControlName="name" placeholder="Your name" autocomplete="off"/>
           </div>
           <div class="field">
             <label>Email</label>
-            <input formControlName="email" placeholder="you@domain.com"/>
+            <input formControlName="email" placeholder="you@domain.com" autocomplete="off"/>
           </div>
           <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:10px">
             <div class="field" style="margin-bottom:0">
@@ -90,11 +90,11 @@
         <div *ngIf="step===1" style="margin-top:20px">
           <div class="field">
             <label>Password</label>
-            <input type="password" formControlName="password" placeholder="At least 6 characters"/>
+            <input type="password" formControlName="password" placeholder="At least 6 characters" autocomplete="new-password"/>
           </div>
           <div class="field">
             <label>Confirm</label>
-            <input type="password" formControlName="confirm" placeholder="Repeat it"/>
+            <input type="password" formControlName="confirm" placeholder="Repeat it" autocomplete="new-password"/>
             <span class="hint" *ngIf="form.errors?.['mismatch'] && form.get('confirm')?.touched" style="color:var(--danger)">
               Passwords don't match.
             </span>
