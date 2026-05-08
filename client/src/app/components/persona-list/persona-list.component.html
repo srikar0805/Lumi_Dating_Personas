@@ -8,9 +8,9 @@
   </div>
 
   <div class="row" style="gap:10px; margin-bottom:20px; flex-wrap:wrap">
-    <div class="row" style="gap:8px; padding:8px 14px; background:var(--card); border:1px solid var(--border); border-radius:var(--pill); min-width:280px">
+    <div class="persona-search-bar">
       <app-icon name="search"></app-icon>
-      <input [(ngModel)]="query" style="background:transparent; border:none; outline:none; flex:1; font-size:13.5px" placeholder="Search name, trait, goal…"/>
+      <input [(ngModel)]="query" placeholder="Search name, trait, goal…"/>
     </div>
     <div class="row" style="gap:6px">
       <span *ngFor="let m of moods$ | async"
@@ -69,7 +69,7 @@
   </ng-container>
 
   <ng-template #hasPersonas>
-    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px">
+    <div class="personas-list-grid">
       <app-persona-card
         *ngFor="let p of filtered$ | async"
         [persona]="p"

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { filter, map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -9,7 +9,7 @@ import { ToastHostComponent } from './shared/toast-host.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent, ToastHostComponent],
+  imports: [CommonModule, RouterOutlet, RouterLink, NavbarComponent, ToastHostComponent],
   templateUrl: './app.component.html',
 })
 export class AppComponent {

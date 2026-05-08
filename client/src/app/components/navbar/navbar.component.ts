@@ -122,7 +122,7 @@ import { AuthService } from '../../services/auth.service';
 
     .profile-menu {
       position: absolute; top: calc(100% + 10px); right: 0; z-index: 80;
-      width: 300px;
+      width: min(300px, calc(100vw - 16px));
       background: var(--card);
       border: 1px solid var(--border-strong);
       border-radius: var(--r-lg);

@@ -20,7 +20,7 @@
       <h3>Pick a persona to see its history</h3>
       <span class="hint">Every edit is versioned.</span>
     </div>
-    <div class="persona-grid" style="grid-template-columns:repeat(3, 1fr)">
+    <div class="persona-picker-grid">
       <div *ngFor="let p of personas" class="persona-card" (click)="pick(p._id!)">
         <div class="ghost-ring"></div>
         <app-persona-orb [initial]="initialOf(p)" [hue]="hueOf(p)" [size]="54"></app-persona-orb>
@@ -43,8 +43,7 @@
       </div>
     </div>
 
-    <div [style.display]="'grid'" [style.gap.px]="28"
-         [style.grid-template-columns]="compareMode ? '1fr 1fr' : '1fr'">
+    <div class="history-grid" [class.compare-active]="compareMode">
       <div>
         <div class="timeline-head">
           <h3 style="margin:0; font-size:16px">Version history</h3>

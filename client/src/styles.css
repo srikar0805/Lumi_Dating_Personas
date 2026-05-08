@@ -98,7 +98,7 @@ body.dark .atmo .blob { opacity: 0.18; }
 .grid-bg { display: none; }
 
 /* ====== App shell ====== */
-.app { position: relative; z-index: 2; min-height: 100vh; }
+.app { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; }
 .navbar {
   position: sticky; top: 0; z-index: 50;
   backdrop-filter: blur(18px) saturate(140%);
@@ -192,9 +192,10 @@ body.dark .atmo .blob { opacity: 0.18; }
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .field label { font-size: 12px; color: var(--text-dim); font-weight: 500; letter-spacing: 0.02em; }
 .field input, .field select, .field textarea {
-  background: var(--card-2); border: 1px solid var(--border); border-radius: var(--r-md);
+  width: 100%; background: var(--card-2); border: 1px solid var(--border); border-radius: var(--r-md);
   padding: 11px 14px; font-size: 14px; outline: none; transition: border-color .2s, background .2s;
 }
+.city-state-row { display: grid; grid-template-columns: 1.6fr 1fr; gap: 10px; }
 .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); background: var(--card); }
 .field .hint { font-size: 11.5px; color: var(--text-faint); }
 
@@ -783,3 +784,168 @@ app-icon.spinning .ico { animation: spin 0.9s linear infinite; transform-origin:
 .row { display: flex; align-items: center; gap: 8px; }
 .row.between { justify-content: space-between; }
 .spacer { flex: 1; }
+
+/* Page header (title + action buttons) — wraps on mobile */
+.page > .row.between { flex-wrap: wrap; gap: 12px; }
+
+/* History compare grid */
+.history-grid { display: grid; gap: 28px; grid-template-columns: 1fr; }
+.history-grid.compare-active { grid-template-columns: 1fr 1fr; }
+
+/* Persona picker in History + Personas list */
+.persona-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.personas-list-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+/* Persona list search bar */
+.persona-search-bar { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--pill); flex: 1; }
+.persona-search-bar input { background: transparent; border: none; outline: none; flex: 1; font-size: 13.5px; min-width: 0; width: 100%; }
+
+/* App footer */
+.app-footer { border-top: 1px solid var(--border); padding: 20px 0 24px; margin-top: auto; }
+.app-footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 28px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; color: var(--text-dim); flex-wrap: wrap; }
+.app-footer-inner nav { display: flex; gap: 16px; }
+.app-footer-inner a { color: var(--text-dim); text-decoration: none; }
+.app-footer-inner a:hover { color: var(--text); }
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  /* Navbar */
+  .nav-inner { padding: 12px 16px; gap: 10px; }
+  .nav-links { gap: 0; margin-left: 0; }
+  .nav-links a { padding: 7px 9px; font-size: 12px; gap: 4px; }
+  .avatar-chip small { display: none; }
+  .logo small { display: none; }
+
+  /* Page shell */
+  .page { padding: 16px; }
+  .page h1 { font-size: 22px; }
+
+  /* Dashboard hero */
+  .dash-hero { padding: 20px; }
+  .dash-hero h1 { font-size: 24px; }
+  .dash-hero p { font-size: 13.5px; }
+  .dash-hero .hero-actions {
+    position: relative; top: auto; right: auto;
+    margin-top: 16px; flex-wrap: wrap;
+  }
+
+  /* Stat row: 2 columns */
+  .stat-row { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+  .stat .value { font-size: 24px; }
+
+  /* Dashboard split: stack */
+  .dash-split { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Persona grid: 1 column on small */
+  .persona-grid { grid-template-columns: 1fr; }
+
+  /* Persona editor: stack panels */
+  .editor { grid-template-columns: 1fr; gap: 16px; }
+  .mood-grid { grid-template-columns: repeat(4, 1fr); }
+
+  /* Matches: stack list + detail */
+  .matches-shell { grid-template-columns: 1fr; }
+  .match-list { max-height: 40vh; }
+  .match-detail { min-height: unset; }
+
+  /* Graph: stack panels */
+  .graph-shell { grid-template-columns: 1fr; }
+  .graph-canvas-wrap { aspect-ratio: 1/1; }
+
+  /* Drift compare */
+  .compare-shell { grid-template-columns: 1fr; }
+
+  /* Drawer: full width */
+  .drawer { width: 100%; padding: 24px 16px; }
+
+  /* Tweaks panel */
+  .tweaks { right: 10px; bottom: 10px; width: calc(100vw - 20px); max-width: 300px; }
+
+  /* Auth pages */
+  .auth-topbar { padding: 16px 20px; }
+  .auth-topbar nav { gap: 12px; font-size: 12.5px; }
+  .auth-bottombar { padding: 12px 20px; }
+  .auth-screen { padding: 0 20px 24px; gap: 24px; }
+  .auth-hero h1 { font-size: 38px; }
+  .auth-hero p { font-size: 14.5px; }
+  .auth-stats { gap: 18px; }
+  .auth-stats .s b { font-size: 24px; }
+  .auth-card { padding: 28px 22px; }
+
+  /* Match viz nodes */
+  .match-viz .node { width: 70px; height: 70px; font-size: 24px; }
+  .match-viz .n1 { left: 16%; }
+  .match-viz .n2 { right: 16%; }
+  .match-grid { grid-template-columns: 1fr; }
+
+  /* Swipe stack */
+  .swipe-stack { max-width: 100%; height: 460px; }
+
+  /* History compare: stack on tablet */
+  .history-grid.compare-active { grid-template-columns: 1fr; }
+  /* Persona list: 2-col on tablet */
+  .personas-list-grid { grid-template-columns: repeat(2, 1fr); }
+  /* History persona picker: 2-col on tablet */
+  .persona-picker-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Search bar: stretch */
+  .persona-search-bar { width: 100%; }
+  /* Footer */
+  .app-footer-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+  /* Page header action buttons row wraps */
+  .page > .row.between > .row { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+  /* Hide auth left panel, show only the form */
+  .auth-left { display: none; }
+  .auth-screen { grid-template-columns: 1fr; padding: 0 16px 16px; }
+  .auth-topbar nav a:not(.btn) { display: none; }
+
+  /* Stat row: 2 col stays, but shrink */
+  .stat-row { gap: 8px; }
+  .stat { padding: 14px; }
+  .stat .value { font-size: 22px; }
+
+  /* Page */
+  .page { padding: 12px; }
+  .page h1 { font-size: 20px; }
+
+  /* Navbar: hide links that don't fit */
+  .nav-links a span { display: none; }
+
+  /* Persona grid stays 1 col */
+  .persona-grid { grid-template-columns: 1fr; }
+
+  /* Dashboard hero actions: wrap tighter */
+  .dash-hero .hero-actions { gap: 6px; }
+  .dash-hero .hero-actions .btn { font-size: 12.5px; padding: 8px 12px; }
+
+  /* Auth card full bleed */
+  .auth-card { border-radius: 20px; padding: 24px 18px; }
+  .auth-right { width: 100%; padding: 12px 0; }
+  /* City/State stacks to single column */
+  .city-state-row { grid-template-columns: 1fr; }
+  .auth-hero h1 { font-size: 30px; }
+
+  /* Mood grid: 2 cols on very small */
+  .mood-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Drawer full width */
+  .drawer { border-left: none; border-top: 1px solid var(--border); border-radius: var(--r-xl) var(--r-xl) 0 0; top: auto; height: 90vh; }
+
+  /* Graph canvas shorter */
+  .graph-canvas-wrap { aspect-ratio: 4/3; }
+
+  /* Personas list & history picker: single col */
+  .personas-list-grid { grid-template-columns: 1fr; }
+  .persona-picker-grid { grid-template-columns: 1fr; }
+
+  /* Avatar chip: hide name + caret, keep avatar only */
+  .avatar-chip .chip-name { display: none; }
+  .avatar-chip .chip-caret { display: none; }
+  .avatar-chip { padding: 4px 6px; gap: 0; }
+
+  /* Page header buttons: full width row */
+  .page > .row.between > .row { width: 100%; }
+  .page > .row.between > button { width: 100%; justify-content: center; }
+}

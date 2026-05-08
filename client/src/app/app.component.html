@@ -6,6 +6,17 @@
   <div class="app">
     <app-navbar></app-navbar>
     <router-outlet></router-outlet>
+    <footer class="app-footer">
+      <div class="app-footer-inner">
+        <div>© 2026 Lumi · where your selves meet</div>
+        <nav>
+          <a routerLink="/dashboard">Home</a>
+          <a routerLink="/personas">My selves</a>
+          <a routerLink="/connect">Connect</a>
+          <a routerLink="/about">About</a>
+        </nav>
+      </div>
+    </footer>
   </div>
 </ng-container>
 <ng-template #unauth>
