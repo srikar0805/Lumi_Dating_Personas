@@ -1,6 +1,6 @@
-# Lumi (Parallel Selves)
+# Lumi — where your selves meet
 
-A persona-to-persona social matching platform built on the **MEAN stack** (MongoDB, Express, Angular, Node) with AI-powered compatibility narratives via the Hugging Face Inference API. Users create up to 5 distinct **selves** (career self, weekend self, creative self…) and match against other people's selves rather than as a single flat profile.
+A persona-to-persona social matching platform built on the **MEAN stack** (MongoDB, Express, Angular, Node) with AI-powered compatibility narratives via the Hugging Face Inference API. On Lumi you don't have one profile — you have selves: a career self, a weekend self, a creative self. Users create up to 5 distinct **selves** and match against other people's selves rather than as a single flat profile.
 
 > **Course:** Web Development II · **Team size:** 3 · **Final due:** May 9, 2026
 
@@ -83,7 +83,7 @@ cp .env.example .env       # if .env.example exists, otherwise create .env from 
 
 ```dotenv
 PORT=5001
-MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/parallelselves?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/lumi?retryWrites=true&w=majority
 JWT_SECRET=replace_with_a_long_random_string
 HF_API_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 HF_MODEL=meta-llama/Llama-3.1-8B-Instruct
