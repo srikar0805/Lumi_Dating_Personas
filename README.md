@@ -8,7 +8,7 @@ A persona-to-persona social matching platform built on the **MEAN stack** (Mongo
 
 | | URL |
 |---|---|
-| Frontend | _add Vercel/Netlify URL here_ |
+| Frontend | https://web-dev-ii-final-project-ten.vercel.app |
 | Backend API | https://web-dev-ii-final-project.onrender.com |
 | Walkthrough video | _add YouTube link here_ |
 
