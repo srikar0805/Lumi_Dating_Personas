@@ -8,9 +8,9 @@ A persona-to-persona social matching platform built on the **MEAN stack** (Mongo
 
 | | URL |
 |---|---|
-| Frontend | _to be added after deployment_ |
-| Backend API | _to be added after deployment_ |
-| Walkthrough video | _to be added_ |
+| Frontend | _add Vercel/Netlify URL here_ |
+| Backend API | https://web-dev-ii-final-project.onrender.com |
+| Walkthrough video | _add YouTube link here_ |
 
 ## Team & roles
 
@@ -25,8 +25,7 @@ A persona-to-persona social matching platform built on the **MEAN stack** (Mongo
 ```
 .
 ├── server/                  Express + MongoDB API
-│   ├── bin/www              Native HTTP server entrypoint with port normalization + listeners
-│   ├── server.js            Express app (exports `app`, no listen call)
+│   ├── server.js            Native HTTP server entrypoint + Express app (http.createServer, normalizePort, routes)
 │   ├── controllers/         Request handlers (auth, personas, matches, ai)
 │   ├── routes/              Thin route → controller wiring
 │   ├── models/              Mongoose schemas (User, Persona, PersonaVersion, Match, Swipe)
@@ -166,7 +165,7 @@ Re-runs automatically on any persona create/update. Bulk recompute via `POST /ap
 
 ## Server architecture
 
-- **Native HTTP server entrypoint** at [server/bin/www](server/bin/www): `http.createServer(app)`, `normalizePort()` helper, and `error` + `listening` event handlers (handles `EACCES` and `EADDRINUSE` explicitly).
+- **Native HTTP server** in [server/server.js](server/server.js): `http.createServer(app)`, `normalizePort()` helper, and `error` + `listening` event handlers (handles `EACCES` and `EADDRINUSE` explicitly). Entry point for `npm start` and `npm run dev`.
 - **MVC separation**: `models/` (Mongoose schemas) → `controllers/` (request handlers) → `routes/` (thin `router.method('/path', controller.fn)` wiring).
 - **JWT middleware** at [server/middleware/auth.js](server/middleware/auth.js) verifies the `Authorization: Bearer …` header, sets `req.userId`, and gates all protected routes.
 - **AI integration** uses the **Hugging Face Inference Providers router** (`https://router.huggingface.co/v1/chat/completions`) with OpenAI-compatible chat completions. Reports are cached in MongoDB so subsequent loads are instant.
@@ -192,11 +191,12 @@ Re-runs automatically on any persona create/update. Bulk recompute via `POST /ap
 
 ## Deployment
 
-_Pending — frontend and backend will be deployed before the May 9 deadline. Live URLs and demo video link will be added to the table at the top of this file._
+| Layer | Host | Notes |
+|---|---|---|
+| Backend | Render.com (Node web service) | Set env vars: `MONGO_URI`, `JWT_SECRET`, `HF_API_TOKEN`, `HF_MODEL`, `PORT` |
+| Frontend | Vercel / Netlify | Build: `ng build --configuration production`; output: `client/dist/client/browser/` |
 
-Planned hosts:
-- **Backend** → Render.com (Node web service). Env vars: `MONGO_URI`, `JWT_SECRET`, `HF_API_TOKEN`, `HF_MODEL`, `PORT`.
-- **Frontend** → Vercel / Netlify (static build of `client/dist/client/browser/`). Before building production, set `client/src/environments/environment.prod.ts` to the deployed API URL.
+Before building for production, update `client/src/environments/environment.prod.ts` with the live backend URL.
 
 ## License
 
