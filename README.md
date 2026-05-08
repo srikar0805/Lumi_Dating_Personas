@@ -200,4 +200,4 @@ Before building for production, update `client/src/environments/environment.prod
 
 ## License
 
-Coursework — University of New Haven, Spring 2026.
+Coursework — University of Missouri, EECS, Spring 2026.
