@@ -54,6 +54,15 @@ export class RegisterComponent {
   next(): void { if (this.step < 2) this.step++; }
   prev(): void { if (this.step > 0) this.step--; }
 
+  get passwordStrength(): { level: number; label: string; color: string } {
+    const pw: string = this.form.get('password')?.value || '';
+    if (!pw) return { level: 0, label: '', color: '' };
+    if (pw.length < 6)  return { level: 1, label: 'Too short', color: 'var(--danger)' };
+    if (pw.length < 8)  return { level: 2, label: 'Weak',      color: 'var(--warning)' };
+    if (pw.length < 12) return { level: 3, label: 'Good',      color: 'var(--accent-2)' };
+    return                     { level: 4, label: 'Strong',    color: 'var(--success)' };
+  }
+
   stepValid(): boolean {
     if (this.step === 0) return !!this.form.get('name')?.valid && !!this.form.get('email')?.valid;
     if (this.step === 1) return !!this.form.get('password')?.valid && !!this.form.get('confirm')?.valid && !this.form.errors?.['mismatch'];

@@ -16,9 +16,9 @@ A persona-to-persona social matching platform built on the **MEAN stack** (Mongo
 
 | Member | Role | Primary deliverables |
 |---|---|---|
-| Graduate Student (Lead) | Architect & Backend Lead | Express server, REST routes, JWT auth middleware, matching algorithm, Hugging Face integration, MongoDB schemas, persona versioning, seed script, deployment |
-| Undergrad Student 1 | Frontend Developer | Angular components (PersonaForm, PersonaCard, PersonaList, Dashboard, MatchDashboard, Connect), reactive forms, routing, route guards, HttpInterceptor, styling |
-| Undergrad Student 2 | Frontend + Data Layer | D3 GraphComponent, ReportPanelComponent, DriftTimelineComponent, all Angular services and BehaviorSubjects, AiService integration, seed data QA |
+| Sai Srikar Kolli | Architect & Backend Lead | Express server, REST routes, JWT auth middleware, matching algorithm, Hugging Face integration, MongoDB schemas, persona versioning, seed script, deployment |
+| Krishna Karra | Frontend Developer | Angular components (PersonaForm, PersonaCard, PersonaList, Dashboard, MatchDashboard, Connect), reactive forms, routing, route guards, HttpInterceptor, styling |
+| Dhanya Boyapally | Frontend + Data Layer | D3 GraphComponent, ReportPanelComponent, DriftTimelineComponent, all Angular services and BehaviorSubjects, AiService integration, seed data QA |
 
 ## Repo layout
 

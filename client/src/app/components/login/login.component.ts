@@ -16,6 +16,7 @@ import { ToastService } from '../../shared/toast.service';
 export class LoginComponent {
   loading = false;
   error = '';
+  showForgot = false;
 
   form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],

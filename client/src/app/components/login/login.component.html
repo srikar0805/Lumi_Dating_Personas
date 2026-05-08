@@ -55,8 +55,20 @@
           <input formControlName="email" placeholder="you@domain.com" autocomplete="off"/>
         </div>
         <div class="field">
-          <label>Password</label>
+          <label style="display:flex; justify-content:space-between; align-items:center">
+            Password
+            <span (click)="showForgot = !showForgot"
+                  style="font-size:12px; font-weight:400; color:var(--accent); cursor:pointer; text-decoration:underline; text-underline-offset:2px">
+              Forgot password?
+            </span>
+          </label>
           <input type="password" formControlName="password" placeholder="••••••••" autocomplete="new-password"/>
+        </div>
+
+        <div *ngIf="showForgot"
+             style="padding:12px 14px; border-radius:12px; background:var(--accent-soft); border:1px solid color-mix(in oklab, var(--accent) 30%, transparent); font-size:13px; line-height:1.5; margin-bottom:4px">
+          <b style="display:block; margin-bottom:4px">Password hint</b>
+          <span class="muted">Demo accounts all use the password <b style="color:var(--text)">demo1234</b>. If you created your own account and forgot your password, re-register with the same email to reset it.</span>
         </div>
 
         <div *ngIf="error" role="alert"
