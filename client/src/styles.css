@@ -98,7 +98,7 @@ body.dark .atmo .blob { opacity: 0.18; }
 .grid-bg { display: none; }
 
 /* ====== App shell ====== */
-.app { position: relative; z-index: 2; min-height: 100vh; }
+.app { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; }
 .navbar {
   position: sticky; top: 0; z-index: 50;
   backdrop-filter: blur(18px) saturate(140%);
@@ -785,6 +785,28 @@ app-icon.spinning .ico { animation: spin 0.9s linear infinite; transform-origin:
 .row.between { justify-content: space-between; }
 .spacer { flex: 1; }
 
+/* Page header (title + action buttons) — wraps on mobile */
+.page > .row.between { flex-wrap: wrap; gap: 12px; }
+
+/* History compare grid */
+.history-grid { display: grid; gap: 28px; grid-template-columns: 1fr; }
+.history-grid.compare-active { grid-template-columns: 1fr 1fr; }
+
+/* Persona picker in History + Personas list */
+.persona-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.personas-list-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+/* Persona list search bar */
+.persona-search-bar { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--card); border: 1px solid var(--border); border-radius: var(--pill); flex: 1; }
+.persona-search-bar input { background: transparent; border: none; outline: none; flex: 1; font-size: 13.5px; min-width: 0; width: 100%; }
+
+/* App footer */
+.app-footer { border-top: 1px solid var(--border); padding: 20px 0 24px; margin-top: auto; }
+.app-footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 28px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; color: var(--text-dim); flex-wrap: wrap; }
+.app-footer-inner nav { display: flex; gap: 16px; }
+.app-footer-inner a { color: var(--text-dim); text-decoration: none; }
+.app-footer-inner a:hover { color: var(--text); }
+
 /* ====== Responsive ====== */
 @media (max-width: 768px) {
   /* Navbar */
@@ -858,6 +880,19 @@ app-icon.spinning .ico { animation: spin 0.9s linear infinite; transform-origin:
 
   /* Swipe stack */
   .swipe-stack { max-width: 100%; height: 460px; }
+
+  /* History compare: stack on tablet */
+  .history-grid.compare-active { grid-template-columns: 1fr; }
+  /* Persona list: 2-col on tablet */
+  .personas-list-grid { grid-template-columns: repeat(2, 1fr); }
+  /* History persona picker: 2-col on tablet */
+  .persona-picker-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Search bar: stretch */
+  .persona-search-bar { width: 100%; }
+  /* Footer */
+  .app-footer-inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+  /* Page header action buttons row wraps */
+  .page > .row.between > .row { flex-wrap: wrap; }
 }
 
 @media (max-width: 480px) {
@@ -900,4 +935,17 @@ app-icon.spinning .ico { animation: spin 0.9s linear infinite; transform-origin:
 
   /* Graph canvas shorter */
   .graph-canvas-wrap { aspect-ratio: 4/3; }
+
+  /* Personas list & history picker: single col */
+  .personas-list-grid { grid-template-columns: 1fr; }
+  .persona-picker-grid { grid-template-columns: 1fr; }
+
+  /* Avatar chip: hide name + caret, keep avatar only */
+  .avatar-chip .chip-name { display: none; }
+  .avatar-chip .chip-caret { display: none; }
+  .avatar-chip { padding: 4px 6px; gap: 0; }
+
+  /* Page header buttons: full width row */
+  .page > .row.between > .row { width: 100%; }
+  .page > .row.between > button { width: 100%; justify-content: center; }
 }

@@ -148,7 +148,12 @@ import { hueOf, formatGoal } from '../../shared/persona-helpers';
     .connect-as { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-dim); }
     .connect-as select { background: var(--card); border: 1px solid var(--border); border-radius: var(--r-md); padding: 8px 12px; font-size: 13.5px; color: var(--text); }
     .swipe-stage { display: flex; flex-direction: column; align-items: center; gap: 22px; }
-    .swipe-stack { position: relative; width: 360px; height: 540px; }
+    .swipe-stack { position: relative; width: min(360px, calc(100vw - 48px)); height: 540px; }
+    @media (max-width: 480px) {
+      .swipe-stack { height: 480px; }
+      .connect-card { padding: 16px; gap: 12px; }
+      .card-id h3 { font-size: 18px; }
+    }
     .connect-card { padding: 22px; gap: 14px; cursor: grab; user-select: none; touch-action: none; }
     .connect-card.is-top { cursor: grab; }
     .connect-card.is-top:active { cursor: grabbing; }
